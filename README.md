@@ -1,1 +1,0 @@
-# Cryptohack_write-up
