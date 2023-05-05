@@ -1,4 +1,0 @@
-Số trường hợp cần phải thử là
-gọi s là độ dài sâu cần giải mã
-thì số trường họp cần phải thử là 2^s
-Khả năng bị bẽ khóa là rất thấp nếu độ dài xâu s là dài vì 1s máy tính thông thường chỉ chạy được 1e8 phép tính tương đương với 2^24 nếu ta tăng độ dài lên theo số mũ đó thì có thể giải mã được nhưng mất rất nhiều thời gian
