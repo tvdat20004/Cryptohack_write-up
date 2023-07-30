@@ -2,7 +2,6 @@ from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 from Crypto.Util.number import inverse
 import hashlib
-from sympy.ntheory.residue_ntheory import discrete_log
 
 def is_pkcs7_padded(message):
     padding = message[-message[-1]:]
