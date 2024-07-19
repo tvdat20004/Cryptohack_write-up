@@ -22,17 +22,47 @@ def decrypt_flag(shared_secret: int, iv: str, ciphertext: str):
         return unpad(plaintext, 16).decode('ascii')
     else:
         return plaintext.decode('ascii')
+def find_embedding_degree(E,p):
+    """
+    E : Elliptic Curve
+    p : the order of base ring
+    """
+    k = 1
+    n = E.order()
+    while (p**k - 1) % n != 0:
+        k += 1
+    return k
+
+#MOV attack !!!
+def MOV_attack(E, G, A, p):
+    """
+    E: Elliptic curve
+    G: generator point
+    A: Point = x*G
+    p: the order of base ring
+    """
+    k = find_embedding_degree(E,p) 
+    E2 = EllipticCurve(GF(p**k), [a,b])
+    T = E2.random_point()
+    M = T.order()
+    N = G.order()
+    T1 = (M//gcd(M, N)) * T
+    _G = E2(G).weil_pairing(T1, N)
+    _A = E2(A).weil_pairing(T1, N)
+    nA = _A.log(_G)
+    return nA
 
 p = 1331169830894825846283645180581
 a = -35
 b = 98
 E = EllipticCurve(GF(p), [a,b])
-print(E.order())
-print(is_prime(E.order()))
 G = E(479691812266187139164535778017,568535594075310466177352868412)
 A = E(1110072782478160369250829345256,800079550745409318906383650948)
 B = E(1290982289093010194550717223760,762857612860564354370535420319)
 iv = 'eac58c26203c04f68d63dc2c58d79aca'
 encrypted_flag = 'bb9ecbd3662d0671fd222ccb07e27b5500f304e3621a6f8e9c815bc8e4e6ee6ebc718ce9ca115cb4e41acb90dbcabb0d'
-# n = G.discrete_log(A)
-# print(n)
+n = MOV_attack(E,G,A,p)
+# n = 29618469991922269
+assert n*G == A 
+shared_secret = (n * B).xy()[0]
+print(decrypt_flag(shared_secret, iv, encrypted_flag))

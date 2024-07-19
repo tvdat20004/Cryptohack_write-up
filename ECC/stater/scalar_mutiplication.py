@@ -33,7 +33,7 @@ def scalar_multiplication(p: Point, n,a,b):
 	return r 
 # E = EllipticCurve(GF(9739),[497,1768])
 
-# p = E(2339, 2213)
+p = Point(2339, 2213,9739)
 # print((p*7863).xy())
 a = scalar_multiplication(p,7863 ,497,1768)
 print(a.x, a.y)

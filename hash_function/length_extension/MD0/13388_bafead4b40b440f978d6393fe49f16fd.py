@@ -34,7 +34,6 @@ class Challenge():
             if b"admin=True" in data:
                 return {"error": "Unauthorized to sign message"}
             sig = hash(self.key + data)
-
             return {"signature": sig.hex()}
 
         elif msg["option"] == "get_flag":
@@ -52,7 +51,6 @@ class Challenge():
 
         else:
             return {"error": "Invalid option"}
-
 
 """
 When you connect, the 'challenge' function will be called on your JSON

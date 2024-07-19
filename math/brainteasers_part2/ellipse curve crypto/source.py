@@ -32,6 +32,7 @@ def gen_keypair():
     return (public, private)
 
 
+
 def gen_shared_secret(P, d):
     return scalar_multiplication(P, d).x
 
@@ -58,6 +59,7 @@ D = 529
 G = Point(29394812077144852405795385333766317269085018265469771684226884125940148,
           94108086667844986046802106544375316173742538919949485639896613738390948)
 
+
 A, n_a = gen_keypair()
 B, n_b = gen_keypair()
 assert (A.x**2 - D*A.y**2) % p == 1
@@ -68,5 +70,4 @@ print(f"Bob's public key: {B}")
 
 shared_secret = gen_shared_secret(B, n_a)
 flag_enc = encrypt_flag(shared_secret, FLAG)
-
 print(f'Encrypted flag: {flag_enc}')

@@ -1,17 +1,19 @@
-from zlib import decompress
-from requests import Session
-import json
+import requests, sys
 
+solution = "crypto{"
+chars = 'ABCDEFGHIJKLMNOPQRTSUVWXYZ0123456789_abcdefghijklmnopqrstuvwxyz}'
+invalid_char = ';'
 
-s = Session()
-url = 'https://aes.cryptohack.org/ctrime/'
-
-def encrypt(pt : bytes):
-	data = s.get(url + 'encrypt/' + pt.hex() + '/').text
-	ct = json.loads(data)['ciphertext']
-	return bytes.fromhex(ct)
-
-ct = encrypt(b'\x00')
-
-pt_flag = decompress(ct)
-print(pt_flag)
+while True:
+    p = (solution + invalid_char) * 2
+    r = requests.get("https://aes.cryptohack.org/ctrime/encrypt/" + p.encode('ascii').hex()).json()
+    sample = len(r['ciphertext'])
+    for c in chars:
+        r = requests.get("https://aes.cryptohack.org/ctrime/encrypt/" + ((solution + c) * 2).encode('ascii').hex()).json()
+        if len(r['ciphertext']) < sample:
+            solution += c
+            print(solution)
+            if c == "}":
+                print("Solution Found!", solution)
+                sys.exit()
+            break
